@@ -37,17 +37,29 @@
         <input type="text" id="edition" name="edition" placeholder="Edition" />
         <small></small>
     </div>
+    <br>
     <button type="button" id="addBtn" onclick="addBooks()">Add</button>
     <button type="button" id="updateBtn" hidden="hidden" onclick="updateBook()">Update</button>
 </form>
 
 
-
+<br>
+<br>
+<div class="field">
+    <input type="text" id="search" name="search" placeholder="Search" />
+    <button type="button" id="searchBtn" onclick="searchBooks()">Search</button>
+    <button type="button" id="clearBtn" onclick="clearSearch()">Clear</button>
+    <small></small>
+</div>
+<br>
 <table id="bookListTable">
 
     <script type="text/javascript">
         populateBookList();
     </script>
+
+</table>
+<table id="searchResultTable" hidden="hidden">
 
 </table>
 </body>

@@ -8,12 +8,14 @@ var Book = /** @class */ (function () {
     return Book;
 }());
 window.localStorage.setItem("bookList", JSON.stringify([]));
+var searchResult = [];
+var bookList = [];
 function addBooks() {
     var bookId = parseInt(document.getElementById("bookId").value);
     var name = document.getElementById("name").value;
     var author = document.getElementById("author").value;
     var edition = document.getElementById("edition").value;
-    var bookList = JSON.parse(localStorage.getItem("bookList"));
+    this.bookList = JSON.parse(localStorage.getItem("bookList"));
     bookList.push(new Book(bookId, name, author, edition));
     window.localStorage.setItem("bookList", JSON.stringify(bookList));
     populateBookList();
@@ -23,18 +25,38 @@ function addBooks() {
     document.getElementById("edition").value = "";
 }
 function deleteRecords(record) {
-    var bookList = JSON.parse(localStorage.getItem("bookList"));
-    console.log('deleted ', bookList[record]);
+    this.bookList = JSON.parse(localStorage.getItem("bookList"));
     bookList.splice(record, 1);
     localStorage.setItem("bookList", JSON.stringify(bookList));
     populateBookList();
+}
+function searchBooks() {
+    document.getElementById("searchResultTable").innerHTML = "";
+    this.searchResult = [];
+    document.getElementById("bookListTable").hidden = true;
+    document.getElementById("searchResultTable").hidden = false;
+    var searchTxt = document.getElementById("search").value;
+    for (var i = 0; i < this.bookList.length; i++) {
+        if ((bookList[i].name).match(searchTxt) || bookList[i].author.match(searchTxt) || bookList[i].edition.match(searchTxt)) {
+            searchResult.push(bookList[i]);
+        }
+    }
+    console.log(searchResult);
+    var searchResultTable = document.getElementById("searchResultTable");
+    generateTable(searchResult, searchResultTable);
+}
+function clearSearch() {
+    this.searchResult = [];
+    document.getElementById("search").value = "";
+    document.getElementById("searchResultTable").hidden = true;
+    document.getElementById("bookListTable").hidden = false;
 }
 function updateBook() {
     var bookId = parseInt(document.getElementById("bookId").value);
     var name = document.getElementById("name").value;
     var author = document.getElementById("author").value;
     var edition = document.getElementById("edition").value;
-    var bookList = JSON.parse(localStorage.getItem("bookList"));
+    this.bookList = JSON.parse(localStorage.getItem("bookList"));
     var updateRecordIndex = parseInt(localStorage.getItem("updateRecordIndex"));
     bookList[updateRecordIndex].id = bookId;
     bookList[updateRecordIndex].name = name;
@@ -57,7 +79,7 @@ function updateRecords(record) {
     document.getElementById("updateBooks").hidden = false;
     document.getElementById("updateBtn").hidden = false;
     localStorage.setItem("updateRecordIndex", record.toString());
-    var bookList = JSON.parse(localStorage.getItem("bookList"));
+    this.bookList = JSON.parse(localStorage.getItem("bookList"));
     document.getElementById("bookId").value = bookList[record].id.toString();
     document.getElementById("name").value = bookList[record].name;
     document.getElementById("author").value = bookList[record].author;
@@ -70,9 +92,10 @@ function populateBookList() {
         booksArray = JSON.parse(localStorage.getItem("bookList"));
     }
     ;
-    console.log(typeof booksArray);
     var bookTable = document.getElementById("bookListTable");
-    var tbody = bookTable.createTBody();
+    generateTable(booksArray, bookTable);
+}
+function generateTable(booksArray, bookTable) {
     var thead = bookTable.createTHead();
     var hrow;
     hrow = thead.insertRow(0);
@@ -94,7 +117,6 @@ function populateBookList() {
             var bookName = booksArray[i].name;
             var author = booksArray[i].author;
             var edition = booksArray[i].edition;
-            console.log("llll", booksArray);
             var dRow = bookTable.insertRow(i + 1);
             cell0 = dRow.insertCell(0);
             cell1 = dRow.insertCell(1);
@@ -117,8 +139,7 @@ function populateBookList() {
         }
     }
     else {
-        // @ts-ignore
-        dRow = document.getElementById("bookListTable").insertRow(1);
+        dRow = bookTable.insertRow(1);
         dRow.innerText = "No Data";
     }
 }
