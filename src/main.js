@@ -10,19 +10,28 @@ var Book = /** @class */ (function () {
 window.localStorage.setItem("bookList", JSON.stringify([]));
 var searchResult = [];
 var bookList = [];
+var regExpr = /^-?\d*\.?\d*$/;
 function addBooks() {
     var bookId = parseInt(document.getElementById("bookId").value);
     var name = document.getElementById("name").value;
     var author = document.getElementById("author").value;
     var edition = document.getElementById("edition").value;
-    this.bookList = JSON.parse(localStorage.getItem("bookList"));
-    bookList.push(new Book(bookId, name, author, edition));
-    window.localStorage.setItem("bookList", JSON.stringify(bookList));
-    populateBookList();
-    document.getElementById("bookId").value = "";
-    document.getElementById("name").value = "";
-    document.getElementById("author").value = "";
-    document.getElementById("edition").value = "";
+    if (!regExpr.test(document.getElementById("bookId").value)) {
+        alert("Id for a book should be a number.");
+    }
+    else if (this.bookList.filter(function (book) { return (book.id == bookId); }).length > 0) {
+        alert("Book Id cannot be duplicated..");
+    }
+    else {
+        this.bookList = JSON.parse(localStorage.getItem("bookList"));
+        bookList.push(new Book(bookId, name, author, edition));
+        window.localStorage.setItem("bookList", JSON.stringify(bookList));
+        populateBookList();
+        document.getElementById("bookId").value = "";
+        document.getElementById("name").value = "";
+        document.getElementById("author").value = "";
+        document.getElementById("edition").value = "";
+    }
 }
 function deleteRecords(record) {
     this.bookList = JSON.parse(localStorage.getItem("bookList"));
@@ -56,22 +65,28 @@ function updateBook() {
     var name = document.getElementById("name").value;
     var author = document.getElementById("author").value;
     var edition = document.getElementById("edition").value;
+    document.getElementById('bookId').disabled = true;
     this.bookList = JSON.parse(localStorage.getItem("bookList"));
     var updateRecordIndex = parseInt(localStorage.getItem("updateRecordIndex"));
     bookList[updateRecordIndex].id = bookId;
     bookList[updateRecordIndex].name = name;
     bookList[updateRecordIndex].author = author;
     bookList[updateRecordIndex].edition = edition;
-    localStorage.setItem("bookList", JSON.stringify(bookList));
-    populateBookList();
-    document.getElementById("addBooks").hidden = false;
-    document.getElementById("addBtn").hidden = false;
-    document.getElementById("updateBooks").hidden = true;
-    document.getElementById("updateBtn").hidden = true;
-    document.getElementById("bookId").value = "";
-    document.getElementById("name").value = "";
-    document.getElementById("author").value = "";
-    document.getElementById("edition").value = "";
+    if (!regExpr.test(bookId.toString())) {
+        alert("Id for a book should be a number.");
+    }
+    else {
+        localStorage.setItem("bookList", JSON.stringify(bookList));
+        populateBookList();
+        document.getElementById("addBooks").hidden = false;
+        document.getElementById("addBtn").hidden = false;
+        document.getElementById("updateBooks").hidden = true;
+        document.getElementById("updateBtn").hidden = true;
+        document.getElementById("bookId").value = "";
+        document.getElementById("name").value = "";
+        document.getElementById("author").value = "";
+        document.getElementById("edition").value = "";
+    }
 }
 function updateRecords(record) {
     document.getElementById("addBooks").hidden = true;

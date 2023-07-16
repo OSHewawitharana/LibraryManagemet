@@ -17,22 +17,29 @@ class Book {
 window.localStorage.setItem("bookList", JSON.stringify([]))
 let searchResult: Book[] = [];
 let bookList: Book[] = [];
+var regExpr: RegExp =  /^-?\d*\.?\d*$/;
 
 function addBooks(): void {
     var bookId: number = parseInt((<HTMLInputElement>document.getElementById("bookId")).value);
     var name: string = (<HTMLInputElement>document.getElementById("name")).value;
     var author: string = (<HTMLInputElement>document.getElementById("author")).value;
     var edition: string = (<HTMLInputElement>document.getElementById("edition")).value;
+    if (!regExpr.test((<HTMLInputElement>document.getElementById("bookId")).value)) {
+        alert("Id for a book should be a number.");
+    } else if (this.bookList.filter(book => {return (book.id == bookId)}).length > 0) {
+        alert("Book Id cannot be duplicated..");
+    } else {
+        this.bookList = JSON.parse(localStorage.getItem("bookList"));
+        bookList.push(new Book(bookId, name, author, edition))
+        window.localStorage.setItem("bookList", JSON.stringify(bookList))
+        populateBookList();
 
-    this.bookList = JSON.parse(localStorage.getItem("bookList"));
-    bookList.push(new Book(bookId, name, author, edition))
-    window.localStorage.setItem("bookList", JSON.stringify(bookList))
-    populateBookList();
+        (<HTMLInputElement>document.getElementById("bookId")).value = "";
+        (<HTMLInputElement>document.getElementById("name")).value = "";
+        (<HTMLInputElement>document.getElementById("author")).value = "";
+        (<HTMLInputElement>document.getElementById("edition")).value = "";
+    }
 
-    (<HTMLInputElement>document.getElementById("bookId")).value = "";
-    (<HTMLInputElement>document.getElementById("name")).value = "";
-    (<HTMLInputElement>document.getElementById("author")).value = "";
-    (<HTMLInputElement>document.getElementById("edition")).value = "";
 
 }
 
@@ -77,24 +84,29 @@ function updateBook() {
     const author: string = (<HTMLInputElement>document.getElementById("author")).value;
     const edition: string = (<HTMLInputElement>document.getElementById("edition")).value;
 
+    (document.getElementById('bookId') as HTMLInputElement).disabled = true;
     this.bookList = JSON.parse(localStorage.getItem("bookList"));
     let updateRecordIndex: number = parseInt(localStorage.getItem("updateRecordIndex"));
     bookList[updateRecordIndex].id = bookId;
     bookList[updateRecordIndex].name = name;
     bookList[updateRecordIndex].author = author;
     bookList[updateRecordIndex].edition = edition;
+    if (!regExpr.test(bookId.toString())) {
+        alert("Id for a book should be a number.");
+    } else {
+        localStorage.setItem("bookList", JSON.stringify(bookList));
+        populateBookList();
+        document.getElementById("addBooks").hidden = false;
+        document.getElementById("addBtn").hidden = false;
+        document.getElementById("updateBooks").hidden = true;
+        document.getElementById("updateBtn").hidden = true;
 
-    localStorage.setItem("bookList", JSON.stringify(bookList));
-    populateBookList();
-    document.getElementById("addBooks").hidden = false;
-    document.getElementById("addBtn").hidden = false;
-    document.getElementById("updateBooks").hidden = true;
-    document.getElementById("updateBtn").hidden = true;
+        (<HTMLInputElement>document.getElementById("bookId")).value = "";
+        (<HTMLInputElement>document.getElementById("name")).value = "";
+        (<HTMLInputElement>document.getElementById("author")).value = "";
+        (<HTMLInputElement>document.getElementById("edition")).value = "";
+    }
 
-    (<HTMLInputElement>document.getElementById("bookId")).value = "";
-    (<HTMLInputElement>document.getElementById("name")).value = "";
-    (<HTMLInputElement>document.getElementById("author")).value = "";
-    (<HTMLInputElement>document.getElementById("edition")).value = "";
 }
 
 function updateRecords(record: number) : void {
