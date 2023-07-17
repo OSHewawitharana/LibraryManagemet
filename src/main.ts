@@ -20,14 +20,17 @@ let bookList: Book[] = [];
 var regExpr: RegExp =  /^-?\d*\.?\d*$/;
 
 function addBooks(): void {
-    var bookId: number = parseInt((<HTMLInputElement>document.getElementById("bookId")).value);
-    var name: string = (<HTMLInputElement>document.getElementById("name")).value;
-    var author: string = (<HTMLInputElement>document.getElementById("author")).value;
-    var edition: string = (<HTMLInputElement>document.getElementById("edition")).value;
+    let bookId: number = parseInt((<HTMLInputElement>document.getElementById("bookId")).value);
+    let name: string = (<HTMLInputElement>document.getElementById("name")).value;
+    let author: string = (<HTMLInputElement>document.getElementById("author")).value;
+    let edition: string = (<HTMLInputElement>document.getElementById("edition")).value;
+
     if (!regExpr.test((<HTMLInputElement>document.getElementById("bookId")).value)) {
         alert("Id for a book should be a number.");
     } else if (this.bookList.filter(book => {return (book.id == bookId)}).length > 0) {
-        alert("Book Id cannot be duplicated..");
+        alert("Book Id cannot be duplicated.");
+    } else if (bookId.toString() != "" || name != "" || author != "" || edition != "") {
+        alert("All the fields are required to fill.");
     } else {
         this.bookList = JSON.parse(localStorage.getItem("bookList"));
         bookList.push(new Book(bookId, name, author, edition))
@@ -60,7 +63,7 @@ function searchBooks(): void {
 
     let searchTxt: string = (<HTMLInputElement>document.getElementById("search")).value;
     for (let i: number = 0; i < this.bookList.length; i++) {
-        if ( (bookList[i].name).match(searchTxt) || bookList[i].author.match(searchTxt) || bookList[i].edition.match(searchTxt)) {
+        if ((bookList[i].name).match(searchTxt)) {
             searchResult.push(bookList[i]);
         }
     }
@@ -84,15 +87,16 @@ function updateBook() {
     const author: string = (<HTMLInputElement>document.getElementById("author")).value;
     const edition: string = (<HTMLInputElement>document.getElementById("edition")).value;
 
-    (document.getElementById('bookId') as HTMLInputElement).disabled = true;
     this.bookList = JSON.parse(localStorage.getItem("bookList"));
     let updateRecordIndex: number = parseInt(localStorage.getItem("updateRecordIndex"));
-    bookList[updateRecordIndex].id = bookId;
     bookList[updateRecordIndex].name = name;
     bookList[updateRecordIndex].author = author;
     bookList[updateRecordIndex].edition = edition;
+
     if (!regExpr.test(bookId.toString())) {
         alert("Id for a book should be a number.");
+    } else if (bookList[updateRecordIndex].id != bookId) {
+        alert("You can't update id of a book.");
     } else {
         localStorage.setItem("bookList", JSON.stringify(bookList));
         populateBookList();
@@ -107,14 +111,18 @@ function updateBook() {
         (<HTMLInputElement>document.getElementById("edition")).value = "";
     }
 
+    (document.getElementById('bookId') as HTMLInputElement).disabled = false;
+
 }
 
 function updateRecords(record: number) : void {
+
     document.getElementById("addBooks").hidden = true;
     document.getElementById("addBtn").hidden = true;
     document.getElementById("updateBooks").hidden = false;
     document.getElementById("updateBtn").hidden = false;
 
+    (document.getElementById('bookId') as HTMLInputElement).disabled = true;
     localStorage.setItem("updateRecordIndex", record.toString());
     this.bookList = JSON.parse(localStorage.getItem("bookList"));
 
@@ -122,6 +130,7 @@ function updateRecords(record: number) : void {
     (<HTMLInputElement>document.getElementById("name")).value = bookList[record].name;
     (<HTMLInputElement>document.getElementById("author")).value = bookList[record].author;
     (<HTMLInputElement>document.getElementById("edition")).value = bookList[record].edition;
+
 }
 
 function populateBookList() : void {

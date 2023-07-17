@@ -22,6 +22,9 @@ function addBooks() {
     else if (this.bookList.filter(function (book) { return (book.id == bookId); }).length > 0) {
         alert("Book Id cannot be duplicated..");
     }
+    else if (bookId.toString() != "" || name != "" || author != "" || edition != "") {
+        alert("All the fields are required.");
+    }
     else {
         this.bookList = JSON.parse(localStorage.getItem("bookList"));
         bookList.push(new Book(bookId, name, author, edition));
@@ -46,7 +49,7 @@ function searchBooks() {
     document.getElementById("searchResultTable").hidden = false;
     var searchTxt = document.getElementById("search").value;
     for (var i = 0; i < this.bookList.length; i++) {
-        if ((bookList[i].name).match(searchTxt) || bookList[i].author.match(searchTxt) || bookList[i].edition.match(searchTxt)) {
+        if ((bookList[i].name).match(searchTxt)) {
             searchResult.push(bookList[i]);
         }
     }
@@ -65,15 +68,16 @@ function updateBook() {
     var name = document.getElementById("name").value;
     var author = document.getElementById("author").value;
     var edition = document.getElementById("edition").value;
-    document.getElementById('bookId').disabled = true;
     this.bookList = JSON.parse(localStorage.getItem("bookList"));
     var updateRecordIndex = parseInt(localStorage.getItem("updateRecordIndex"));
-    bookList[updateRecordIndex].id = bookId;
     bookList[updateRecordIndex].name = name;
     bookList[updateRecordIndex].author = author;
     bookList[updateRecordIndex].edition = edition;
     if (!regExpr.test(bookId.toString())) {
         alert("Id for a book should be a number.");
+    }
+    else if (bookList[updateRecordIndex].id != bookId) {
+        alert("You can't update id of a book.");
     }
     else {
         localStorage.setItem("bookList", JSON.stringify(bookList));
@@ -87,12 +91,14 @@ function updateBook() {
         document.getElementById("author").value = "";
         document.getElementById("edition").value = "";
     }
+    document.getElementById('bookId').disabled = false;
 }
 function updateRecords(record) {
     document.getElementById("addBooks").hidden = true;
     document.getElementById("addBtn").hidden = true;
     document.getElementById("updateBooks").hidden = false;
     document.getElementById("updateBtn").hidden = false;
+    document.getElementById('bookId').disabled = true;
     localStorage.setItem("updateRecordIndex", record.toString());
     this.bookList = JSON.parse(localStorage.getItem("bookList"));
     document.getElementById("bookId").value = bookList[record].id.toString();
