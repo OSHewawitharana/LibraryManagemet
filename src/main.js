@@ -20,10 +20,10 @@ function addBooks() {
         alert("Id for a book should be a number.");
     }
     else if (this.bookList.filter(function (book) { return (book.id == bookId); }).length > 0) {
-        alert("Book Id cannot be duplicated..");
+        alert("Book Id cannot be duplicated.");
     }
-    else if (bookId.toString() != "" || name != "" || author != "" || edition != "") {
-        alert("All the fields are required.");
+    else if (bookId.toString() == "" || name == "" || author == "" || edition == "") {
+        alert("All the fields are required to fill.");
     }
     else {
         this.bookList = JSON.parse(localStorage.getItem("bookList"));
@@ -48,8 +48,14 @@ function searchBooks() {
     document.getElementById("bookListTable").hidden = true;
     document.getElementById("searchResultTable").hidden = false;
     var searchTxt = document.getElementById("search").value;
+    var searchFields = (document.getElementById("searchFields"));
+    var selectedVal = searchFields.selectedIndex;
+    var selectedOpt = searchFields.options[selectedVal];
     for (var i = 0; i < this.bookList.length; i++) {
-        if ((bookList[i].name).match(searchTxt)) {
+        if ((selectedOpt.value == "nameSearch" && (bookList[i].name).match(searchTxt)) ||
+            selectedOpt.value == "authorSearch" && (bookList[i].author).match(searchTxt) ||
+            selectedOpt.value == "editionSearch" && (bookList[i].edition).match(searchTxt) ||
+            selectedOpt.value == "idSearch" && (bookList[i].id.toString()).match(searchTxt)) {
             searchResult.push(bookList[i]);
         }
     }

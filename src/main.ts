@@ -29,7 +29,7 @@ function addBooks(): void {
         alert("Id for a book should be a number.");
     } else if (this.bookList.filter(book => {return (book.id == bookId)}).length > 0) {
         alert("Book Id cannot be duplicated.");
-    } else if (bookId.toString() != "" || name != "" || author != "" || edition != "") {
+    } else if (bookId.toString() == "" || name == "" || author == "" || edition == "") {
         alert("All the fields are required to fill.");
     } else {
         this.bookList = JSON.parse(localStorage.getItem("bookList"));
@@ -62,8 +62,15 @@ function searchBooks(): void {
     document.getElementById("searchResultTable").hidden = false;
 
     let searchTxt: string = (<HTMLInputElement>document.getElementById("search")).value;
+    let searchFields: HTMLSelectElement = (document.getElementById("searchFields")) as HTMLSelectElement;
+    let selectedVal: number = searchFields.selectedIndex;
+    let selectedOpt: HTMLOptionElement = searchFields.options[selectedVal];
+
     for (let i: number = 0; i < this.bookList.length; i++) {
-        if ((bookList[i].name).match(searchTxt)) {
+        if ((selectedOpt.value == "nameSearch" && (bookList[i].name).match(searchTxt)) ||
+            selectedOpt.value == "authorSearch" && (bookList[i].author).match(searchTxt) ||
+            selectedOpt.value == "editionSearch" && (bookList[i].edition).match(searchTxt) ||
+            selectedOpt.value == "idSearch" && (bookList[i].id.toString()).match(searchTxt)) {
             searchResult.push(bookList[i]);
         }
     }

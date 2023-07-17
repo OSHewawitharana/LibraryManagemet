@@ -1,69 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="">
 <style>
     table, tr, td {
         border: 1px solid black;
         text-align: center;
     }
+
 </style>
 <head>
     <title>This is Title</title>
     <script type="text/javascript" src="src/main.js"></script>
 </head>
 <body>
-<h3 style="color: blue">SCU Library</h3>
+<div>
+    <h3 style="color: blue">SCU Library</h3>
 
-<form id="signup">
-    <h3 id="addBooks">Add Books</h3>
-    <h3 id="updateBooks" hidden="hidden">Update Books</h3>
+    <form id="signup">
+        <h3 id="addBooks">Add Books</h3>
+        <h3 id="updateBooks" hidden="hidden">Update Books</h3>
 
+        <div class="field">
+            <label for="bookId">Id:</label>
+            <input type="number" id="bookId" name="bookId" placeholder="Id"/>
+            <small></small>
+        </div>
+        <br>
+        <div class="field">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Name"/>
+            <small></small>
+        </div>
+        <br>
+        <div class="field">
+            <label for="author">Author:</label>
+            <input type="text" id="author" name="author" placeholder="Author"/>
+            <small></small>
+        </div>
+        <br>
+        <div class="field">
+            <label for="edition">Edition:</label>
+            <input type="text" id="edition" name="edition" placeholder="Edition"/>
+            <small></small>
+        </div>
+        <br>
+        <button type="button" id="addBtn" onclick="addBooks()">Add</button>
+        <button type="button" id="updateBtn" hidden="hidden" onclick="updateBook()">Update</button>
+    </form>
+
+
+    <br>
+    <br>
     <div class="field">
-        <label for="bookId">Id:</label>
-        <input type="number" id="bookId" name="bookId" placeholder="Id" />
+        <input type="text" id="search" name="search" placeholder="Search"/>
+        <select name="searchFields" id="searchFields">
+            <option value="idSearch">Id</option>
+            <option value="nameSearch">Name</option>
+            <option value="authorSearch">Author</option>
+            <option value="editionSearch">Edition</option>
+        </select>
+        <button type="button" id="searchBtn" onclick="searchBooks()">Search</button>
+        <button type="button" id="clearBtn" onclick="clearSearch()">Clear</button>
         <small></small>
     </div>
     <br>
-    <div class="field">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" placeholder="Name" />
-        <small></small>
-    </div>
-    <br>
-    <div class="field">
-        <label for="author">Author:</label>
-        <input type="text" id="author" name="author" placeholder="Author" />
-        <small></small>
-    </div>
-    <br>
-    <div class="field">
-        <label for="edition">Edition:</label>
-        <input type="text" id="edition" name="edition" placeholder="Edition" />
-        <small></small>
-    </div>
-    <br>
-    <button type="button" id="addBtn" onclick="addBooks()">Add</button>
-    <button type="button" id="updateBtn" hidden="hidden" onclick="updateBook()">Update</button>
-</form>
+    <table id="bookListTable">
 
+        <script type="text/javascript">
+            populateBookList();
+        </script>
 
-<br>
-<br>
-<div class="field">
-    <input type="text" id="search" name="search" placeholder="Search" />
-    <button type="button" id="searchBtn" onclick="searchBooks()">Search</button>
-    <button type="button" id="clearBtn" onclick="clearSearch()">Clear</button>
-    <small></small>
+    </table>
+    <table id="searchResultTable" hidden="hidden">
+
+    </table>
 </div>
-<br>
-<table id="bookListTable">
-
-    <script type="text/javascript">
-        populateBookList();
-    </script>
-
-</table>
-<table id="searchResultTable" hidden="hidden">
-
-</table>
 </body>
 </html>
