@@ -1,22 +1,104 @@
 <!DOCTYPE html>
 <html lang="">
-<style>
-    table, tr, td {
-        border: 1px solid black;
-        text-align: center;
-    }
-
-</style>
 <head>
     <title>This is Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"  />
     <script type="text/javascript" src="src/main.js"></script>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 50%; /* Adjust the width as needed */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+        td {
+            text-align: center; /* Center align the table row data */
+        }
+        h3 {
+            text-align: center;
+        }
+        h2 {
+            text-align: center;
+        }
+
+        #signup {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+            width: 50%; /* Adjust the width as needed */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 10px;
+            width: 80%; /* Adjust the width as needed */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .field label {
+            width: 80px;
+            text-align: right;
+            margin-right: 10px;
+        }
+
+        .field input {
+            width: 100%;
+        }
+
+        #searchBooks {
+            text-align: right;
+            width: 50%; /* Adjust the width as needed */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #addBtn, #updateBtn {
+            background-color: goldenrod;
+            color: white;
+            padding: 10px 40px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .update-button {
+            background-color: #4CAF50; // Green background color //
+        color: white; // Text color //
+        }
+
+        .delete-button {
+            background-color: #f44336; // Red background color //
+        color: white; // Text color //
+        }
+
+         /*Optional: Add padding and border-radius to the buttons */
+        button.update-button,
+        button.delete-button {
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
 <div>
-    <h3 style="color: blue">SCU Library</h3>
+    <h2 style="color: blue">SCU Library</h2>
 
     <form id="signup">
-        <h3 id="addBooks">Add Books</h3>
+        <h3 id="addBooks">ADD BOOKS</h3>
         <h3 id="updateBooks" hidden="hidden">Update Books</h3>
 
         <div class="field">
@@ -50,7 +132,7 @@
 
     <br>
     <br>
-    <div class="field">
+    <div  id="searchBooks">
         <input type="text" id="search" name="search" placeholder="Search"/>
         <select name="searchFields" id="searchFields">
             <option value="idSearch">Id</option>

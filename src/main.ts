@@ -151,6 +151,7 @@ function populateBookList() : void {
     generateTable(booksArray, bookTable);
 }
 
+/*
 function generateTable(booksArray: Book[], bookTable: HTMLTableElement): void {
 
     let thead: HTMLTableSectionElement = bookTable.createTHead();
@@ -210,5 +211,61 @@ function generateTable(booksArray: Book[], bookTable: HTMLTableElement): void {
     } else {
         dRow = bookTable.insertRow(1);
         dRow.innerText = "No Data";
+    }
+}*/
+function generateTable(booksArray, bookTable) {
+    var thead = bookTable.createTHead();
+    var hrow;
+    hrow = thead.insertRow(0);
+    var cell0 = hrow.insertCell(0);
+    cell0.innerHTML = "ID";
+    var cell1 = hrow.insertCell(1);
+    cell1.innerHTML = "Name";
+    var cell2 = hrow.insertCell(2);
+    cell2.innerHTML = "Author";
+    var cell3 = hrow.insertCell(3);
+    cell3.innerHTML = "Edition";
+    var cell4 = hrow.insertCell(4);
+    cell4.innerHTML = "Update";
+    var cell5 = hrow.insertCell(5);
+    cell5.innerHTML = "Delete";
+
+    if (booksArray.length > 0) {
+        for (var i = 0; i < booksArray.length; i++) {
+            var id = booksArray[i].id;
+            var bookName = booksArray[i].name;
+            var author = booksArray[i].author;
+            var edition = booksArray[i].edition;
+            var dRow = bookTable.insertRow(i + 1);
+            cell0 = dRow.insertCell(0);
+            cell1 = dRow.insertCell(1);
+            cell2 = dRow.insertCell(2);
+            cell3 = dRow.insertCell(3);
+            cell4 = dRow.insertCell(4);
+            cell5 = dRow.insertCell(5);
+
+            var updateBtn = document.createElement('button');
+            updateBtn.innerHTML = '<i class="fas fa-edit"></i>'; // Add icon using Font Awesome
+            updateBtn.classList.add('update-button'); // Add CSS class for styling
+            updateBtn.onclick = (function (i) { return function () { updateRecords(i); }; })(i);
+
+            var deleteBtn = document.createElement('button');
+            deleteBtn.innerHTML = '<i class="fas fa-trash"></i>'; // Add icon using Font Awesome
+            deleteBtn.classList.add('delete-button'); // Add CSS class for styling
+            deleteBtn.onclick = (function (i) { return function () { deleteRecords(i); }; })(i);
+
+            cell0.innerHTML = id.toString();
+            cell1.innerHTML = bookName;
+            cell2.innerHTML = author;
+            cell3.innerHTML = edition;
+            cell4.appendChild(updateBtn);
+            cell5.appendChild(deleteBtn);
+        }
+    } else {
+        dRow = bookTable.insertRow(1);
+        var noDataCell = dRow.insertCell(0);
+        noDataCell.innerText = "No Data";
+        noDataCell.style.textAlign = "center"; // Center align the "No Data" message
+        noDataCell.colSpan = 6;
     }
 }

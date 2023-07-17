@@ -122,6 +122,68 @@ function populateBookList() {
     var bookTable = document.getElementById("bookListTable");
     generateTable(booksArray, bookTable);
 }
+/*
+function generateTable(booksArray: Book[], bookTable: HTMLTableElement): void {
+
+    let thead: HTMLTableSectionElement = bookTable.createTHead();
+
+    let hrow: HTMLTableRowElement;
+    hrow = <HTMLTableRowElement> thead.insertRow(0);
+
+    let cell0: HTMLTableCellElement = hrow.insertCell(0);
+    cell0.innerHTML = "ID";
+
+    let cell1: HTMLTableCellElement = hrow.insertCell(1);
+    cell1.innerHTML = "Name";
+
+    let cell2: HTMLTableCellElement = hrow.insertCell(2);
+    cell2.innerHTML = "Author";
+
+    let cell3: HTMLTableCellElement = hrow.insertCell(3);
+    cell3.innerHTML = "Edition";
+
+    let cell4: HTMLTableCellElement = hrow.insertCell(4);
+    cell4.innerHTML = "Update";
+
+    let cell5: HTMLTableCellElement = hrow.insertCell(5);
+    cell5.innerHTML = "Delete";
+
+    if (booksArray.length > 0) {
+        for (let i: number = 0; i<booksArray.length; i++) {
+            let id: number = booksArray[i].id;
+            let bookName: string = booksArray[i].name;
+            let author: string = booksArray[i].author;
+            let edition: string = booksArray[i].edition;
+
+
+            var dRow: HTMLTableRowElement = bookTable.insertRow(i+1);
+            cell0 = dRow.insertCell(0);
+            cell1 = dRow.insertCell(1);
+            cell2 = dRow.insertCell(2);
+            cell3 = dRow.insertCell(3);
+            cell4 = dRow.insertCell(4);
+            cell5 = dRow.insertCell(5);
+
+            let updateBtn: HTMLElement = document.createElement('deleteBtn'+(i+1));
+            updateBtn.innerText = 'Update';
+            updateBtn.onclick = (function(i: number) {return function() : void {updateRecords(i);}})(i);
+
+            let deleteBtn: HTMLElement = document.createElement('deleteBtn'+(i+1));
+            deleteBtn.innerText = 'Delete';
+            deleteBtn.onclick = (function(i: number) {return function() : void {deleteRecords(i);}})(i);
+
+            cell0.innerHTML = id.toString();
+            cell1.innerHTML = bookName;
+            cell2.innerHTML = author;
+            cell3.innerHTML = edition;
+            cell4.appendChild(updateBtn);
+            cell5.appendChild(deleteBtn);
+        }
+    } else {
+        dRow = bookTable.insertRow(1);
+        dRow.innerText = "No Data";
+    }
+}*/
 function generateTable(booksArray, bookTable) {
     var thead = bookTable.createTHead();
     var hrow;
@@ -151,11 +213,13 @@ function generateTable(booksArray, bookTable) {
             cell3 = dRow.insertCell(3);
             cell4 = dRow.insertCell(4);
             cell5 = dRow.insertCell(5);
-            var updateBtn = document.createElement('deleteBtn' + (i + 1));
-            updateBtn.innerText = 'Update';
+            var updateBtn = document.createElement('button');
+            updateBtn.innerHTML = '<i class="fas fa-edit"></i>'; // Add icon using Font Awesome
+            updateBtn.classList.add('update-button'); // Add CSS class for styling
             updateBtn.onclick = (function (i) { return function () { updateRecords(i); }; })(i);
-            var deleteBtn = document.createElement('deleteBtn' + (i + 1));
-            deleteBtn.innerText = 'Delete';
+            var deleteBtn = document.createElement('button');
+            deleteBtn.innerHTML = '<i class="fas fa-trash"></i>'; // Add icon using Font Awesome
+            deleteBtn.classList.add('delete-button'); // Add CSS class for styling
             deleteBtn.onclick = (function (i) { return function () { deleteRecords(i); }; })(i);
             cell0.innerHTML = id.toString();
             cell1.innerHTML = bookName;
@@ -167,6 +231,9 @@ function generateTable(booksArray, bookTable) {
     }
     else {
         dRow = bookTable.insertRow(1);
-        dRow.innerText = "No Data";
+        var noDataCell = dRow.insertCell(0);
+        noDataCell.innerText = "No Data";
+        noDataCell.style.textAlign = "center"; // Center align the "No Data" message
+        noDataCell.colSpan = 6;
     }
 }
